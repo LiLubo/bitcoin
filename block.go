@@ -1,6 +1,7 @@
 package main
 
 import (
+	"bytes"
 	"crypto/sha256"
 	"time"
 )
@@ -40,13 +41,25 @@ func NewBlock(data string, prevBlockHash []byte) *Block {
 func (block *Block) setHash() {
 	var data []byte
 	// uintToByte() 将数字转换成 []byte{},在utils.go中实现
-	data = append(data, uintToByte(block.Version)...)
-	data = append(data, block.PrevBlockHash...)
-	data = append(data, block.MerKleRoot...)
-	data = append(data, uintToByte(block.TimeStamp)...)
-	data = append(data, uintToByte(block.Difficulity)...)
-	data = append(data, uintToByte(block.Nonce)...)
-	data = append(data, block.Data...)
+	// data = append(data, uintToByte(block.Version)...)
+	// data = append(data, block.PrevBlockHash...)
+	// data = append(data, block.MerKleRoot...)
+	// data = append(data, uintToByte(block.TimeStamp)...)
+	// data = append(data, uintToByte(block.Difficulity)...)
+	// data = append(data, uintToByte(block.Nonce)...)
+	// data = append(data, block.Data...)
+
+	tmp := [][]byte{
+		uintToByte(block.Version),
+		block.PrevBlockHash,
+		block.MerKleRoot,
+		uintToByte(block.TimeStamp),
+		uintToByte(block.Difficulity),
+		uintToByte(block.Nonce),
+		block.Data,
+	}
+
+	data = bytes.Join(tmp, []byte{})
 
 	hash /* [32]byte */ := sha256.Sum256(data)
 	block.Hash = hash[:]
