@@ -36,17 +36,35 @@ func (block *Block) setHash() {
 	block.Hash = hash[:]
 }
 
-// 4.引入区块链
-// 5.添加区块
-// 6.重构代码
+// 4.引入区块链,使用Block数组模拟
+type BlockChain struct {
+	Blocks []*Block
+}
 
-func main() {
-	block := NewBlock(
+// 创建区块链方法
+func NewBlockChain() *BlockChain {
+	// 在创建的时候添加一个区块， 创世块
+	genesisBlock := NewBlock(
 		"hello world",
 		[]byte{0x0000000000000000},
 	)
 
-	fmt.Printf("PrevBlockHash: %x\n", block.PrevBlockHash)
-	fmt.Printf("Hash: %x\n", block.Hash)
-	fmt.Printf("Data: %s\n", block.Data)
+	bc := BlockChain{[]*Block{genesisBlock}}
+
+	return &bc
+}
+
+// 5.添加区块
+// 6.重构代码
+
+func main() {
+	bc := NewBlockChain()
+
+	// 遍历打印所有的区块
+	for _, block := range bc.Blocks {
+		fmt.Printf("PrevBlockHash: %x\n", block.PrevBlockHash)
+		fmt.Printf("Hash: %x\n", block.Hash)
+		fmt.Printf("Data: %s\n", block.Data)
+	}
+
 }
